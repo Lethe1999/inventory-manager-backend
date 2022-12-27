@@ -3,6 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
+const userRoute = require("./routes/userRoute");
+const errorHandler = require("./middleware/errorMiddleware");
+
 // Create a server
 const app = express();
 
@@ -11,10 +14,17 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(bodyParser.json());
 
+
 // Routes
 app.get("/", (req, res) => {
     res.send("Home page");
 });
+app.use("/api/users", userRoute);
+
+
+// Error Middleware
+app.use(errorHandler);
+
 
 // Connect to MongoDB
 const PORT = process.env.PORT || 5001;
