@@ -2,8 +2,13 @@ const dotenv = require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const path = require("path");
 
 const userRoute = require("./routes/userRoute");
+const productRoute = require("./routes/productRoute");
+const contactRoute = require("./routes/contactRoute");
 const errorHandler = require("./middleware/errorMiddleware");
 
 // Create a server
@@ -13,14 +18,18 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors());
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 app.get("/", (req, res) => {
     res.send("Home page");
 });
 app.use("/api/users", userRoute);
-
+app.use("/api/products", productRoute);
+app.use("/api/contactus", contactRoute);
 
 // Error Middleware
 app.use(errorHandler);
